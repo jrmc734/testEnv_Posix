@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ "develop", "feature/*", "hotfix/*" ]
+  pull_request:
+    branches: [ "develop" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+
+      - name: Build project
+        run: |
+          make clean
+          make
+          
+      #- name: Run tests
+      #  run: |
+      #    make test
+          # Quando tiver alguma build de teste que rode com "make test"
