@@ -5,4 +5,6 @@
 #define SEM_NAME "/my_sem"
 #define MQ_NAME "/my_mq"
 
+#define SHM_PERMISSIONS 0666
+
 #endif
