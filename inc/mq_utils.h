@@ -8,7 +8,7 @@ mqd_t create_mq(char *mq_name);
 
 mqd_t open_mq(char *mq_name);
 
-void close_mq(mqd_t mqd);
+void close_mq(mqd_t mqd, char *mq_name);
 
 void read_mq(mqd_t mq_receiver, char* buffer);
 

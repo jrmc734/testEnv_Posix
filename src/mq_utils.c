@@ -41,17 +41,17 @@ mqd_t open_mq(char *mq_name)
     return mqd;
 }
 
-void close_mq(mqd_t mqd)
+void close_mq(mqd_t mqd, char *mq_name)
 {
-    printf("Closing %s message queue\n", MQ_NAME);
+    printf("Closing %s message queue\n", mq_name);
     if (mq_close(mqd) == -1)
     {
         perror("Error closing message queue");
         exit(1);
     }
     printf("Message queue closed\n");
-    printf("Unlinking %s message queue\n", MQ_NAME);
-    if (mq_unlink(MQ_NAME) == -1)
+    printf("Unlinking %s message queue\n", mq_name);
+    if (mq_unlink(mq_name) == -1)
     {
         perror("Error unlinking message queue");
         exit(1);

@@ -2,6 +2,7 @@ BINFOLDER := bin/
 INCFOLDER := inc/
 SRCFOLDER := src/
 OBJFOLDER := obj/
+TESTFOLDER := test/
 
 CC := gcc
 CFLAGS := -Wall -lpthread
@@ -23,3 +24,10 @@ clean:
 
 run:
 	bin/controller_bin
+
+test: test/test_mq_utils
+	./test/test_mq_utils
+
+test/test_mq_utils: test/test_mq_utils.c src/mq_utils.c test/unity.c
+	$(CC) $(CFLAGS) test/test_mq_utils.c src/mq_utils.c test/unity.c -o test/test_mq_utils -I$(TESTFOLDER) -I$(INCFOLDER)
+
