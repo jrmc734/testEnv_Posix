@@ -12,14 +12,15 @@
 #include "mq_utils.h"
 #include "shm_utils.h"
 
-mqd_t mq_receiver;
+volatile int paused = 0;
 
-void terminate_mq()
-{
-    printf("Closing message queue\n");
-    close_mq(mq_receiver);
-    exit(0);
-}
+// Declaring variables globally so that its easier to terminate execution
+int cluster_pid;
+int simulator_pid;
+mqd_t mq_receiver;
+char *shm_ptr;
+int shm_fd;
+sem_t *sem;
 
 int main()
 {
@@ -29,9 +30,18 @@ int main()
     printf("Controller initialized with PID: %d\n", pid);
 
     mq_receiver = create_mq(MQ_NAME);
-    int shm_fd = create_shm(SHM_NAME);
-    char *shm_ptr = map_shm(shm_fd, PROT_READ);
-    sem_t *sem = create_sem(SEM_NAME);
+    shm_fd = create_shm(SHM_NAME);
+    shm_ptr = map_shm(shm_fd, PROT_READ);
+    sem = create_sem(SEM_NAME);
+
+    cluster_pid = execute_file("bin/instrument_cluster_bin");
+    simulator_pid = execute_file("bin/sensor_simulator_bin");
+
+    sleep(1);
+
+    char mq_buffer[MQ_MAX_MSG_SIZE];
+
+    printf("[controller] Controller initialized with PID: %d\n", pid);
 
     sensors_info sinfo = {0};
 
@@ -39,8 +49,8 @@ int main()
     {
         read_mq(mq_receiver, mq_buffer);
         read_shm(shm_ptr, sem, &sinfo);
-        printf("Message received from mqueue: <%s>\n", mq_buffer);
-        printf("Info received from shm: S: %*d, R: %*d, T: %*d ==\n", 3, sinfo.speed, 4, sinfo.rpm, 3, sinfo.temp);
+        printf("[controller] Message received from mqueue: <%s>\n", mq_buffer);
+        printf("[controller] Info received from shm: S: %*d, R: %*d, T: %*d\n", 3, sinfo.speed, 4, sinfo.rpm, 3, sinfo.temp);
         sleep(1);
     }
 
