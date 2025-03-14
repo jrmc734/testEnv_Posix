@@ -11,6 +11,7 @@
 #include "constants.h"
 #include "mq_utils.h"
 #include "shm_utils.h"
+#include "menu.h"
 
 volatile int paused = 0;
 
