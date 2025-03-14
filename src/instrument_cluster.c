@@ -15,7 +15,7 @@ int main()
     {
         sprintf(buffer, "Message from IC: %d", rand() % 100);
         write_mq(mq_sender, buffer);
-        printf("Message sent: <%s>\n", buffer);
+        printf("[instrument_cluster]: <%s>\n", buffer);
         sleep(1);
     }
 
