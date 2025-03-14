@@ -11,6 +11,7 @@
 #include "constants.h"
 #include "mq_utils.h"
 #include "shm_utils.h"
+#include "menu.h"
 
 volatile int paused = 0;
 
@@ -31,6 +32,9 @@ int execute_file(char *file_path);
 int main()
 {
     int pid = getpid();
+
+    print_header(pid);
+    print_user_menu();
 
     signal(SIGINT, terminate_all);
     signal(SIGUSR1, pause_controller);

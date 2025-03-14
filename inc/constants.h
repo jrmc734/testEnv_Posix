@@ -10,4 +10,11 @@
 
 #define SHM_PERMISSIONS 0666
 
+#define LTS_COMMAND 'L'
+#define RTS_COMMAND 'R'
+#define LHL_COMMAND 'W'
+#define HHL_COMMAND 'H'
+#define THR_COMMAND 'T'
+#define BRK_COMMAND 'B'
+
 #endif
