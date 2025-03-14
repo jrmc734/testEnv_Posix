@@ -25,7 +25,6 @@ int main()
     int thrt_on = 0; // throttle
     int brks_on = 0; // breaks
 
-    print_user_menu();
     while (1)
     {
         scanf(" %c", &command);

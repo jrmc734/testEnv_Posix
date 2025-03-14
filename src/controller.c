@@ -33,6 +33,9 @@ int main()
 {
     int pid = getpid();
 
+    print_header(pid);
+    print_user_menu();
+
     signal(SIGINT, terminate_all);
     signal(SIGUSR1, pause_controller);
     signal(SIGUSR2, terminate_all);
