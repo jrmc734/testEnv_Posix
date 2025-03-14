@@ -11,10 +11,6 @@ void tearDown(void) {
     // clean stuff up here
 }
 
-void test_function_should_doAlsoDoBlah(void) {
-    TEST_ASSERT_EQUAL(0, 1);
-}
-
 void test_get_mq_attr(void) {
     struct mq_attr attr = get_mq_attr();
     TEST_ASSERT_EQUAL(O_NONBLOCK, attr.mq_flags);
@@ -45,6 +41,5 @@ int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_get_mq_attr);
     RUN_TEST(test_create_and_close_mq);
-    RUN_TEST(test_function_should_doAlsoDoBlah);
     return UNITY_END();
 }
