@@ -22,12 +22,19 @@ char *shm_ptr;
 int shm_fd;
 sem_t *sem;
 
+void pause_controller();
+
+void terminate_all();
+
+int execute_file(char *file_path);
+
 int main()
 {
     int pid = getpid();
-    char mq_buffer[MQ_MAX_MSG_SIZE];
 
-    printf("Controller initialized with PID: %d\n", pid);
+    signal(SIGINT, terminate_all);
+    signal(SIGUSR1, pause_controller);
+    signal(SIGUSR2, terminate_all);
 
     mq_receiver = create_mq(MQ_NAME);
     shm_fd = create_shm(SHM_NAME);
@@ -62,4 +69,40 @@ int main()
     sem_unlink(SEM_NAME);
 
     return 0;
+}
+
+void pause_controller()
+{
+    paused = !paused;
+}
+
+void terminate_all()
+{
+    printf("\nTerminating all processes...\n");
+
+    kill(cluster_pid, SIGINT);
+    kill(simulator_pid, SIGINT);
+
+    munmap(shm_ptr, 4096);
+    close(shm_fd);
+    shm_unlink(SHM_NAME);
+
+    sem_close(sem);
+    sem_unlink(SEM_NAME);
+
+    close_mq(mq_receiver);
+
+    exit(0);
+}
+
+int execute_file(char *file_path)
+{
+    int pid = fork();
+    if (pid == 0)
+    {
+        execl(file_path, file_path, NULL);
+        perror("execl failed");  // Mostra erro caso a execução falhe
+        exit(EXIT_FAILURE);      // Finaliza o processo filho se houver falha
+    }
+    return pid;
 }

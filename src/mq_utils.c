@@ -49,19 +49,21 @@ void close_mq(mqd_t mqd)
         perror("Error closing message queue");
         exit(1);
     }
+    printf("Message queue closed\n");
+    printf("Unlinking %s message queue\n", MQ_NAME);
     if (mq_unlink(MQ_NAME) == -1)
     {
         perror("Error unlinking message queue");
         exit(1);
     }
+    printf("Message queue unlinked\n");
 }
 
 void read_mq(mqd_t mq_receiver, char* buffer)
 {
     if (mq_receive(mq_receiver, buffer, MQ_MAX_MSG_SIZE, NULL) == (mqd_t)-1)
     {
-        perror("Error receiving message");
-        exit(1);
+        perror("Message queue is empty");
     }
 }
 
