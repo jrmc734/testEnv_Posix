@@ -2,6 +2,16 @@
 #define MQ_UTILS_H
 #include <mqueue.h>
 
+typedef struct
+{
+    int left_turn_signal;
+    int right_turn_signal;
+    int low_headl;
+    int high_headl;
+    int throttle;
+    int breaks;
+} cluster_info;
+
 struct mq_attr get_mq_attr();
 
 mqd_t create_mq(char *mq_name);
