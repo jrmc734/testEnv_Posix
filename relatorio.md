@@ -9,7 +9,7 @@ Para a criação e organização de branches, foi utilizado um modelo similar ao
  - e branches `fix/*` para correção de bugs.
 
 ## Convenção de commits
-Para commits mais elaborados, foi adotada uma estratégia similar ao [Karma](https://karma-runner.github.io/6.4/dev/git-commit-msg.html), onde as mensagens de commit seguiam um padrão de:
+Para commits mais elaborados, foi adotada uma estratégia similar ao [Karma](https://karma-runner.github.io/6.4/dev/git-commit-msg.html), onde as mensagens de commit seguem o seguinte padrão:
 ```
 <type>[(<scope>)]: <subject>
 <BLANK LINE>
@@ -30,7 +30,7 @@ test(mq_utils): add tests for mq_utils
 - configure gitignore to ignore test binaries
 - add target to Makefile to build and run tests
 ```
-
+ou
 ```
 bugfix: uptading .gitignore
 ```
@@ -42,15 +42,13 @@ Em casos de commits mais simples, como a criação e atualização de actions ou
 
 A estratégia de CI/CD foi configurada por meio de workflows no **GitHub Actions**, localizados em `.github/workflows/`.
 
----
-
-## CI (Integração Contínua)
+### CI (Integração Contínua)
 
 **Objetivo:** Compilar e testar o projeto sempre que houver **push** ou **Pull Request** na `develop` (ou em branches de `feature/` ou `fix/`).
 
 **Arquivo:** `test-ci.yml` (como exemplo).
 
-### Etapas
+#### Etapas
 
 1. Fazer **checkout** do repositório ([actions/checkout](https://github.com/actions/checkout)).
 2. Instalar dependências necessárias (compilador C, etc.).
@@ -59,9 +57,7 @@ A estratégia de CI/CD foi configurada por meio de workflows no **GitHub Actions
 
 > **Resultado:** Qualquer falha de compilação ou teste impede que o Pull Request seja aceito sem correções.
 
----
-
-## Release CD (Entrega Contínua)
+### Release CD (Entrega Contínua)
 
 **Objetivo:** Criar uma release e publicar uma imagem Docker quando:
 - há **push** na branch `main`, ou
@@ -69,14 +65,14 @@ A estratégia de CI/CD foi configurada por meio de workflows no **GitHub Actions
 
 **Arquivo:** `CD.yml`.
 
-### Etapas
+#### Etapas
 
 1. **Checkout** do código.
 2. **Build e teste** (para garantir consistência).
 3. **Docker**: Gera-se duas imagens docker. Uma imagem é a versão específica da release (com o nome do number_runner da action) e outra imagem sendo o `lastest`, com isso sempre teremos uma imagem para cade release e uma imagem sempre sendo uma última versão.
 
 ## Estrutura e política de testes
-Os testes foram criados numa pasta `test/` separada da pasta `src/` e testam as "bibliotecas" criadas.
+Os testes foram criados numa pasta `test/` separada da pasta `src/` e testam as bibliotecas de funções criadas para acessar a fila de mensagens e a memória compartilhada.
 
 ```
 .
@@ -106,11 +102,13 @@ Além disso, há um workflow [test-ci.yml](https://github.com/jrmc734/testenv_po
 
 ## Forma de versionamento adotada
 
-Foram criadas tags e releases em pontos estáveis do código:
+Foram criadas tags e releases em pontos estáveis do código a partir da branch `main`:
 
 - Na [v1.0](https://github.com/jrmc734/testenv_posix/releases/tag/v1.0), é possível executar o código dos 3 módulos separadamente e verificar a comunicação entre eles.
-- Na [v2.0](https://github.com/jrmc734/testenv_posix/releases/tag/v2.0), é possível execugtar apenas o Controlador e este, por sua vez, inicializa os dois outros módulos. Aqui a comunicação segue um padrão e é possível ler comandos do usuário.
-- Na [v3.0], ...
+- Na [v2.0](https://github.com/jrmc734/testenv_posix/releases/tag/v2.0), é possível executar apenas o Controlador e este, por sua vez, inicializa os dois outros módulos. Aqui a comunicação segue um padrão e é possível ler comandos do usuário.
+- Na [v3.0](https://github.com/jrmc734/testenv_posix/releases/tag/v3.0), foi melhorada a interface para o usuário e, ao finalizar a execução, é mostrado um relatório dos comandos enviados pelo usuário.
+
+Para mais detalhes sobre as releases, consulte o [changelog.md](https://github.com/jrmc734/testenv_posix/blob/main/CHANGELOG.md).
 
 ## Gerenciamento de issues
 
@@ -119,7 +117,7 @@ Seguindo os [requisitos do projeto da disciplina de POSIX](https://github.com/Cu
 criamos cards pra cada um deles, e, ao abrir PRs, foi utilizada referência cruzada para [fechar issues automaticamente](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue).
 
 ## Lições aprendidas
-Pudemos exercitar na prática conceitos de gerência de configuração e ficar maravilhados ao vê-los funcionar (principalmente as actions).
+Pudemos exercitar, na prática, e com considerável extensão, conceitos de gerência de configuração e ficar maravilhados ao vê-los funcionar (principalmente as actions).
 - **Pipelines de CI/CD**: Os pipelines de CI/CD são excelentes para acelerar a criação de releases e integração dos códigos, além de garantir que não possa fazer um push de um código defeituoso em branches importantes (main ou develop).
 - **Github Projects**: A utilização do Projects do Github é uma ferramenta bem interessante para organizar uma equipe.
 - **Padronização de commits e revisão de PRs**: Percebemos que, ao adotar convenções de commits e exigir revisões de Pull Requests, reduzimos significativamente o retrabalho. Com a padronização, era fácil identificar onde e por que uma mudança foi feita.
@@ -133,6 +131,7 @@ Pudemos exercitar na prática conceitos de gerência de configuração e ficar m
 - "Slow and steady wins the race", moral da fábula _A Tartaruga e a Lebre_
 - Padronização é muito importante na hora de procurar erros e onde problemas podem ter acontecidos
 - Revisão de PRs dá uma maior confiabilidade para o código a ser integrado
+- O board do kanban facilita a visualização do progresso da sprint e do projeto
 - A definição de regras de proteção nas branches principais garante uma camada de proteção contra código defeituoso
 - Utilização de branches temporárias para desenvolvimento de novas funcionalidades e correção de bugs se mostrou bastante proveitoso, garantindo um processo mais padronizado entre a equipe.
 - O github secrets é bem interessante! Excelente ferramenta que o grupo desconhecia
