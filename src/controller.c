@@ -65,12 +65,7 @@ int main()
         sleep(1);
     }
 
-    close_mq(mq_receiver);
-    munmap(shm_ptr, 4096);
-    close(shm_fd);
-    shm_unlink(SHM_NAME);
-    sem_close(sem);
-    sem_unlink(SEM_NAME);
+    terminate_all();
 
     return 0;
 }
@@ -94,7 +89,7 @@ void terminate_all()
     sem_close(sem);
     sem_unlink(SEM_NAME);
 
-    close_mq(mq_receiver);
+    close_mq(mq_receiver, MQ_NAME);
 
     exit(0);
 }

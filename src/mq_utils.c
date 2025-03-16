@@ -41,17 +41,17 @@ mqd_t open_mq(char *mq_name)
     return mqd;
 }
 
-void close_mq(mqd_t mqd)
+void close_mq(mqd_t mqd, char *mq_name)
 {
-    printf("Closing %s message queue\n", MQ_NAME);
+    printf("Closing %s message queue\n", mq_name);
     if (mq_close(mqd) == -1)
     {
         perror("Error closing message queue");
         exit(1);
     }
     printf("Message queue closed\n");
-    printf("Unlinking %s message queue\n", MQ_NAME);
-    if (mq_unlink(MQ_NAME) == -1)
+    printf("Unlinking %s message queue\n", mq_name);
+    if (mq_unlink(mq_name) == -1)
     {
         perror("Error unlinking message queue");
         exit(1);
@@ -59,19 +59,22 @@ void close_mq(mqd_t mqd)
     printf("Message queue unlinked\n");
 }
 
-void read_mq(mqd_t mq_receiver, char* buffer)
+int read_mq(mqd_t mq_receiver, char* buffer)
 {
     if (mq_receive(mq_receiver, buffer, MQ_MAX_MSG_SIZE, NULL) == (mqd_t)-1)
     {
         perror("Message queue is empty");
+        return -1;
     }
+    return 0;
 }
 
-void write_mq(mqd_t mq_sender, char *msg)
+int write_mq(mqd_t mq_sender, char *msg)
 {
     if (mq_send(mq_sender, msg, strlen(msg) + 1, 0) == -1)
     {
         perror("Error sending message. Message queue is full");
-        exit(1);
+        return -1;
     }
+    return 0;
 }
