@@ -40,6 +40,41 @@ Em casos de commits mais simples, como a criação e atualização de actions ou
 
 ## Procedimento de build e CI/CD
 
+A estratégia de CI/CD foi configurada por meio de workflows no **GitHub Actions**, localizados em `.github/workflows/`.
+
+---
+
+## CI (Integração Contínua)
+
+**Objetivo:** Compilar e testar o projeto sempre que houver **push** ou **Pull Request** na `develop` (ou em branches de `feature/` ou `fix/`).
+
+**Arquivo:** `test-ci.yml` (como exemplo).
+
+### Etapas
+
+1. Fazer **checkout** do repositório ([actions/checkout](https://github.com/actions/checkout)).
+2. Instalar dependências necessárias (compilador C, etc.).
+3. Executar `make clean && make`.
+4. Executar `make test`, rodando os testes do framework **Unity**.
+
+> **Resultado:** Qualquer falha de compilação ou teste impede que o Pull Request seja aceito sem correções.
+
+---
+
+## Release CD (Entrega Contínua)
+
+**Objetivo:** Criar uma release e publicar uma imagem Docker quando:
+- há **push** na branch `main`, ou
+- quando se cria uma **tag** (por exemplo, `vX.Y`).
+
+**Arquivo:** `CD.yml`.
+
+### Etapas
+
+1. **Checkout** do código.
+2. **Build e teste** (para garantir consistência).
+3. **Docker**: Gera-se duas imagens docker. Uma imagem é a versão específica da release (com o nome do number_runner da action) e outra imagem sendo o `lastest`, com isso sempre teremos uma imagem para cade release e uma imagem sempre sendo uma última versão.
+
 ## Estrutura e política de testes
 Os testes foram criados numa pasta `test/` separada da pasta `src/` e testam as "bibliotecas" criadas.
 
@@ -84,13 +119,19 @@ Seguindo os [requisitos do projeto da disciplina de POSIX](https://github.com/Cu
 criamos cards pra cada um deles, e, ao abrir PRs, foi utilizada referência cruzada para [fechar issues automaticamente](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue).
 
 ## Lições aprendidas
-Pudemos exercitar na prática conceitos de gerência de configuração e ficar maravilhados ao vê-los funcionar.
+Pudemos exercitar na prática conceitos de gerência de configuração e ficar maravilhados ao vê-los funcionar (principalmente as actions).
+- **Pipelines de CI/CD**: Os pipelines de CI/CD são excelentes para acelerar a criação de releases e integração dos códigos, além de garantir que não possa fazer um push de um código defeituoso em branches importantes (main ou develop).
+- **Github Projects**: A utilização do Projects do Github é uma ferramenta bem interessante para organizar uma equipe.
+- **Padronização de commits e revisão de PRs**: Percebemos que, ao adotar convenções de commits e exigir revisões de Pull Requests, reduzimos significativamente o retrabalho. Com a padronização, era fácil identificar onde e por que uma mudança foi feita.
+- **Gerência de versão e tags**: Descobrimos que taguear versões estáveis e criar releases no GitHub era mais útil do que imaginávamos, pois facilitou a recuperação de uma versão funcional quando algo quebrava em uma branch de desenvolvimento.
+- **Docker no processo de build e deploy**: No início, os integrantes não tinham familiaridade com Docker. Com o tempo, aprendemos que a criação de uma imagem padronizada e a publicação no Docker Hub simplificam o compartilhamento do ambiente e a execução da aplicação em diferentes máquinas.
+- **Documentação e histórico**: A manutenção de um CHANGELOG.md e de um relatório contínuo de SCM ajudou na organização, pois cada membro ficou mais consciente do que estava sendo feito.
 
 ## Reflexões
 - "Por mais longa que seja a caminhada, o mais importante é dar o primeiro passo." - Vinícius de Moraes
 - "Slow and steady wins the race", moral da fábula _A Tartaruga e a Lebre_
 - Padronização é muito importante na hora de procurar erros e onde problemas podem ter acontecidos
 - Revisão de PRs dá uma maior confiabilidade para o código a ser integrado
-- 
-
+- O github secrets é bem interessante! Excelente ferramenta que o grupo desconhecia
+- Entender e aprender como funciona o Github Actions é muito importante, tanto para o projeto como para o mercado de trabalho no geral.
 
