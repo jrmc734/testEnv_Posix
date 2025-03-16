@@ -33,9 +33,6 @@ int main()
 {
     int pid = getpid();
 
-    print_header(pid);
-    print_user_menu();
-
     signal(SIGINT, terminate_all);
     signal(SIGUSR1, pause_controller);
     signal(SIGUSR2, terminate_all);
@@ -50,19 +47,27 @@ int main()
 
     sleep(1);
 
-    char mq_buffer[MQ_MAX_MSG_SIZE];
-
     printf("[controller] Controller initialized with PID: %d\n", pid);
 
     sensors_info sinfo = {0};
+    char mq_buffer[MQ_MAX_MSG_SIZE];
 
     while (1)
     {
-        read_mq(mq_receiver, mq_buffer);
-        read_shm(shm_ptr, sem, &sinfo);
-        printf("[controller] Message received from mqueue: <%s>\n", mq_buffer);
-        printf("[controller] Info received from shm: S: %*d, R: %*d, T: %*d\n", 3, sinfo.speed, 4, sinfo.rpm, 3, sinfo.temp);
-        sleep(1);
+        clear_screen();
+        if(paused)
+        {
+            printf("Controller execution paused. Send SIGUSR1 to resume (kill -SIGUSR1 %d).\n", pid);
+        }
+        else
+        {
+            print_interface(pid);
+            printf("[controller] Message received from mqueue: <%s>\n", mq_buffer);
+            printf("[controller] Info received from shm: S: %*d, R: %*d, T: %*d\n", 3, sinfo.speed, 4, sinfo.rpm, 3, sinfo.temp);
+            read_mq(mq_receiver, mq_buffer);
+            read_shm(shm_ptr, sem, &sinfo);
+        }
+        sleep(3);
     }
 
     terminate_all();

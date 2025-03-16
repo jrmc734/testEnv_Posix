@@ -63,7 +63,7 @@ int read_mq(mqd_t mq_receiver, char* buffer)
 {
     if (mq_receive(mq_receiver, buffer, MQ_MAX_MSG_SIZE, NULL) == (mqd_t)-1)
     {
-        perror("Message queue is empty");
+        printf("Message queue is empty. Waiting for user input ...");
         return -1;
     }
     return 0;
