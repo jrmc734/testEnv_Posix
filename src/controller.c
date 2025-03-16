@@ -13,6 +13,18 @@
 #include "shm_utils.h"
 #include "menu.h"
 
+
+// Struct that stores the commands received from instrument_cluster
+struct report_info
+{
+    unsigned short right_signal;
+    unsigned short left_signal;
+    unsigned short high_headlights;
+    unsigned short low_headlights;
+    int throttle;
+    int brakes;
+};
+
 volatile int paused = 0;
 
 // Declaring variables globally so that its easier to terminate execution
@@ -22,12 +34,19 @@ mqd_t mq_receiver;
 char *shm_ptr;
 int shm_fd;
 sem_t *sem;
+struct report_info report = {0};
+
+
 
 void pause_controller();
 
 void terminate_all();
 
 int execute_file(char *file_path);
+
+void update_cluster_info(char *buffer);
+
+void report_display();
 
 int main()
 {
@@ -64,9 +83,12 @@ int main()
             print_interface(pid);
             printf("[controller] Message received from mqueue: <%s>\n", mq_buffer);
             printf("[controller] Info received from shm: S: %*d, R: %*d, T: %*d\n", 3, sinfo.speed, 4, sinfo.rpm, 3, sinfo.temp);
-            read_mq(mq_receiver, mq_buffer);
+            if(read_mq(mq_receiver, mq_buffer) == 0)
+                update_cluster_info(mq_buffer);
+
             read_shm(shm_ptr, sem, &sinfo);
         }
+
         sleep(3);
     }
 
@@ -95,6 +117,9 @@ void terminate_all()
     sem_unlink(SEM_NAME);
 
     close_mq(mq_receiver, MQ_NAME);
+    
+    report_display();
+
 
     exit(0);
 }
@@ -109,4 +134,51 @@ int execute_file(char *file_path)
         exit(EXIT_FAILURE);      // Finaliza o processo filho se houver falha
     }
     return pid;
+}
+
+void update_cluster_info(char *buffer)
+{
+    switch (buffer[0])
+    {
+    case 'B':
+        if(buffer[3] == '1')
+            report.brakes++;
+        break;
+    case 'T':
+        if(buffer[3] == '1')
+            report.throttle++;
+        break;
+    case 'L':
+        if(buffer[3] == '1')
+            report.left_signal++;
+        break;
+    case 'R':
+        if(buffer[3] == '1')
+            report.right_signal++;
+        break;
+    case 'W':
+        if(buffer[3] == '1')
+            report.low_headlights++;
+        break;
+    case 'H':
+        if(buffer[3] == '1')
+            report.high_headlights++;
+        break;
+    
+    default:
+        break;
+    }
+
+}
+
+void report_display()
+{
+    printf("\nReport - Activations sent by the user\n");
+    printf("Accelerator: %d\n",report.throttle);
+    printf("Brake: %d\n",report.brakes);
+    printf("Right signal: %d\n",report.right_signal);
+    printf("Left signal: %d\n",report.left_signal);
+    printf("High headlights: %d\n",report.high_headlights);
+    printf("Low headlights: %d\n",report.low_headlights);
+
 }
