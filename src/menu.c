@@ -1,4 +1,5 @@
 #include "constants.h"
+#include "menu.h"
 #include <stdio.h>
 
 void clear_screen()
@@ -26,4 +27,13 @@ void print_user_menu()
     printf("=== %c: Turn on/off left turn signal  ===\n", LTS_COMMAND);
     printf("=== %c: Turn on/off right turn signal ===\n", RTS_COMMAND);
     printf("========================================\n");
+}
+
+
+void print_interface(int pid)
+{
+    printf("\n");
+    print_header(pid);
+    print_user_menu();
+    printf("\n");
 }

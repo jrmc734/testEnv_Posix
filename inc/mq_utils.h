@@ -2,6 +2,7 @@
 #define MQ_UTILS_H
 #include <mqueue.h>
 
+
 struct mq_attr get_mq_attr();
 
 mqd_t create_mq(char *mq_name);
