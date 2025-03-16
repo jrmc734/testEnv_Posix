@@ -1,4 +1,5 @@
 #include <sys/stat.h>
+#define UNITY_VERBOSE_OUTPUT
 #include "unity.h"
 #include "mq_utils.h"
 #include "constants.h"
