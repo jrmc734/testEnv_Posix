@@ -126,12 +126,15 @@ Pudemos exercitar na prática conceitos de gerência de configuração e ficar m
 - **Gerência de versão e tags**: Descobrimos que taguear versões estáveis e criar releases no GitHub era mais útil do que imaginávamos, pois facilitou a recuperação de uma versão funcional quando algo quebrava em uma branch de desenvolvimento.
 - **Docker no processo de build e deploy**: No início, os integrantes não tinham familiaridade com Docker. Com o tempo, aprendemos que a criação de uma imagem padronizada e a publicação no Docker Hub simplificam o compartilhamento do ambiente e a execução da aplicação em diferentes máquinas.
 - **Documentação e histórico**: A manutenção de um CHANGELOG.md e de um relatório contínuo de SCM ajudou na organização, pois cada membro ficou mais consciente do que estava sendo feito.
+- **Gerenciamento do código fonte**: Ao utilizar a estrutura base do Github Flow, com main e develop como branches principais e features/ como branches temporárias e que agregavam funcionalidades ao código, percebemos que o processo de desenvolvimento se torna mais padronizado e organizado.
 
 ## Reflexões
 - "Por mais longa que seja a caminhada, o mais importante é dar o primeiro passo." - Vinícius de Moraes
 - "Slow and steady wins the race", moral da fábula _A Tartaruga e a Lebre_
 - Padronização é muito importante na hora de procurar erros e onde problemas podem ter acontecidos
 - Revisão de PRs dá uma maior confiabilidade para o código a ser integrado
+- A definição de regras de proteção nas branches principais garante uma camada de proteção contra código defeituoso
+- Utilização de branches temporárias para desenvolvimento de novas funcionalidades e correção de bugs se mostrou bastante proveitoso, garantindo um processo mais padronizado entre a equipe.
 - O github secrets é bem interessante! Excelente ferramenta que o grupo desconhecia
 - Entender e aprender como funciona o Github Actions é muito importante, tanto para o projeto como para o mercado de trabalho no geral.
 
