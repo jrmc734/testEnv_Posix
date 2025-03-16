@@ -59,19 +59,22 @@ void close_mq(mqd_t mqd, char *mq_name)
     printf("Message queue unlinked\n");
 }
 
-void read_mq(mqd_t mq_receiver, char* buffer)
+int read_mq(mqd_t mq_receiver, char* buffer)
 {
     if (mq_receive(mq_receiver, buffer, MQ_MAX_MSG_SIZE, NULL) == (mqd_t)-1)
     {
         perror("Message queue is empty");
+        return -1;
     }
+    return 0;
 }
 
-void write_mq(mqd_t mq_sender, char *msg)
+int write_mq(mqd_t mq_sender, char *msg)
 {
     if (mq_send(mq_sender, msg, strlen(msg) + 1, 0) == -1)
     {
         perror("Error sending message. Message queue is full");
-        exit(1);
+        return -1;
     }
+    return 0;
 }
