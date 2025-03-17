@@ -30,3 +30,35 @@ Esse processo simula três sensores automotivos com valores randômicos, cada um
 - Rotação do motor: varia entre 1000 e 8000 RPM
 - Temperatura: varia entre 75 e 105 °C
 Cada thread ajusta o valor do sensor e escreve na memória compartilhada, permitindo que o Controlador possa ler os valores gerados. Também é válido destacar que esse processo utiliza um semáforo para garantir que apenas uma thread acesse a memória compartilhada por vez.
+
+# Como executar
+
+Para baixar a imagem do Docker Hub, basta digitar no terminal:
+```
+$ docker pull jrmc734/testenv_posix
+```
+
+Em seguida, para subir o container a partir da imagem no modo interativo:
+```
+$ docker run -it jrmc734/testenv_posix sh
+```
+
+Após isso, estaremos já no ambiente da aplicação. Assim, basta executar
+```
+$ make all
+```
+para buildar o projeto.
+
+E, para executar:
+```
+$ make run
+```
+
+Como opcional, é possível "limpar" os binários utilizando
+```
+$ make clean
+```
+e rodar os testes unitários com 
+```
+$ make test
+```
