@@ -26,12 +26,16 @@ run:
 	bin/controller_bin
 
 .SILENT: test
-test: test/test_mq_utils ./test/test_mq_utils_read
+test: ./test/test_shm_utils test/test_mq_utils ./test/test_mq_utils_read
 	./test/test_mq_utils
 	./test/test_mq_utils_read
+	./test/test_shm_utils
 
 test/test_mq_utils: test/test_mq_utils.c src/mq_utils.c test/unity.c
 	$(CC) $(CFLAGS) test/test_mq_utils.c src/mq_utils.c test/unity.c -o test/test_mq_utils -I$(TESTFOLDER) -I$(INCFOLDER)
 
 test/test_mq_utils_read: test/test_mq_utils_read.c src/mq_utils.c test/unity.c
 	$(CC) $(CFLAGS) test/test_mq_utils_read.c src/mq_utils.c test/unity.c -o test/test_mq_utils_read -I$(TESTFOLDER) -I$(INCFOLDER)
+
+test/test_shm_utils: test/test_shm_utils.c src/shm_utils.c test/unity.c
+	$(CC) $(CFLAGS) test/test_shm_utils.c src/shm_utils.c test/unity.c -o test/test_shm_utils -I$(TESTFOLDER) -I$(INCFOLDER)
