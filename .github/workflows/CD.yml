@@ -59,14 +59,15 @@ jobs:
           password: ${{secrets.DOCKERHUB_PWD}}
           
       - name: Docker Image
+        if: startsWith(github.ref, 'refs/tags/')
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile       # o Dockerfile esta na raiz do projeto
           push: true             # ou true, se você quiser enviar p/ registry
           tags: |                # duas versoes, sempre terá a mais recente e uma tag associada a ela. (mas a latest sempre vai ser atual)
-            ${{secrets.DOCKERHUB_USERNAME}}/testenv_posix:${{github.run_number}}
-            ${{ secrets.DOCKERHUB_USERNAME}}/testenv_posix:latest
+            ${{secrets.DOCKERHUB_USERNAME}}/testEnv_Poxis:${{github.ref_name}}
+            ${{ secrets.DOCKERHUB_USERNAME}}/testEnv_Poxis:latest
             
       
         
