@@ -3,7 +3,7 @@ Este arquivo documenta as principais mudanças entre as versões de release que 
  
 Este change log é fortemente inspirado no [changelog de juampynr](https://gist.github.com/juampynr/4c18214a8eb554084e21d6e288a18a2c).
  
-## Unreleased (v3.0) - 2025-03-16
+## [v3.0](https://github.com/jrmc734/testenv_posix/releases/tag/v3.0) - 2025-03-16
 
 Essa release adiciona os testes ao projeto e melhora a UI.
  
