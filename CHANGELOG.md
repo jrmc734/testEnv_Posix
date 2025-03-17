@@ -5,14 +5,16 @@ This changelog is strongly inspired by [juampynr's sample changelog](https://gis
  
 ## Unreleased (v3.0) - 2025-03-16
 
-This release adds testing to the project.
+This release adds the tests to the project and improves the terminal user interface.
  
 ### Added
 
+- [Feature: [controlador] relatório](https://github.com/jrmc734/testenv_posix/issues/22) - Add user commands report at the end of execution
 - [Testes: Escrever testes](https://github.com/jrmc734/testenv_posix/issues/8) - Create tests to mq_utils and shm_utils
- 
+
 ### Changed
 
+- [Refactor: [controller] improve user interface](https://github.com/jrmc734/testenv_posix/issues/46) - Improve user interface to show commands more easily
 - [Refactor: [mq_utils] refactor mq_utils to make testing easier](https://github.com/jrmc734/testenv_posix/issues/43) - Change read_mq and write_mq return types to make testing easier.
  
 ### Fixed
