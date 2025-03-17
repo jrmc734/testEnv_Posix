@@ -84,7 +84,7 @@ int main()
         }
 
         write_mq(mq_sender, buffer);
-        printf("[instrument_cluster]: <%s>\n", buffer);
+      //  printf("[instrument_cluster]: <%s>\n", buffer);
         sleep(1);
     }
 

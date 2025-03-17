@@ -46,7 +46,7 @@ void *speed_thread(void *args)
                 speed_increasing = 1;
         }
         sprintf(shm, "S: %d", cur_speed);
-        printf("[sensor_simulator]: <%s>\n", shm);
+        //printf("[sensor_simulator]: <%s>\n", shm);
         sem_post(sem);
         thread_sleep();
     }
@@ -74,7 +74,7 @@ void *rpm_thread(void *args)
                 rpm_increasing = 1;
         }
         sprintf(shm, "R: %d", cur_rpm);
-        printf("[sensor_simulator]: <%s>\n", shm);
+       // printf("[sensor_simulator]: <%s>\n", shm);
         sem_post(sem);
         thread_sleep();
     }
@@ -102,7 +102,7 @@ void *temperature_thread(void *args)
                 temp_increasing = 1;
         }
         sprintf(shm, "T: %d", cur_temp);
-        printf("[sensor_simulator]: <%s>\n", shm);
+       // printf("[sensor_simulator]: <%s>\n", shm);
         sem_post(sem);
         thread_sleep();
     }
